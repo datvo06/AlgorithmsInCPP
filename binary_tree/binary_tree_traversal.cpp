@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <stack>
 #include <algorithm>
 #include <queue>
 
@@ -77,4 +78,60 @@ class BinaryTree{
 		}
 		return result;
 	}
+	
+	static std::vector<int> iterativePostOrder(BinaryTree* pRoot){
+		std::stack<BinaryTree*> stack1;
+		std::stack<BinaryTree*> stack2;
+		std::vector<int> results;
+		stack2.push(pRoot);
+		if (pRoot->leftChild != NULL){
+			stack1.push(pRoot->leftChild);
+		}
+		if (pRoot->rightChild != NULL){
+			stack1.push(pRoot->rightChild);
+		}
+		while (!stack1.empty()){
+			stack2.push(stack1.top());
+			stack1.pop();
+			if (stack2.top()->leftChild != NULL){
+				stack1.push(stack2.top()->leftChild);
+			}
+			if (stack2.top()->rightChild != NULL){
+				stack1.push(stack2.top()->rightChild);
+			}
+		}
+		while (!stack2.empty()){
+			results.push_back(stack2.top()->data);
+			stack2.pop();
+		}
+		return results;
+	}
+
+	static std::vector<int> iterativePreOrder(BinaryTree* pRoot){
+		std::stack<BinaryTree*> stack;
+		std::vector<int> results;
+		stack.push(pRoot);
+
+		if (pRoot->rightChild != NULL){
+			stack.push(pRoot->rightChild);
+		}
+
+		if (pRoot->leftChild != NULL){
+			stack.push(pRoot->leftChild);
+		}
+		
+		while (!stack.empty()){
+			results.push_back(stack.top()->data);
+			pRoot = stack.top();
+			stack.pop();
+			if (pRoot->rightChild != NULL){
+				stack.push(pRoot->rightChild);
+			}
+			if (pRoot->leftChild != NULL){
+			stack.push(pRoot->leftChild);
+			}
+		}
+		return results;
+	}
+
 };
